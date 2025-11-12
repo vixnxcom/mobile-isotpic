@@ -1602,7 +1602,7 @@ export default function InventoryExpenseTracker() {
             <select
               value={selectedProduct}
               onChange={(e) => setSelectedProduct(e.target.value)}
-              className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
+              className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-md  outline-none"
             >
               {products.map(product => (
                 <option key={product} value={product}>{product}</option>
@@ -1611,7 +1611,7 @@ export default function InventoryExpenseTracker() {
 <select
   value={selectedCategory}
   onChange={(e) => setSelectedCategory(e.target.value)}
-      className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
+      className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-md  outline-none"
             >
   {categories.map((cat) => (
     <option key={cat} value={cat} className="bg-white text-gray-700 hover:bg-blue-100">
@@ -1624,7 +1624,7 @@ export default function InventoryExpenseTracker() {
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
-             className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
+             className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-md  outline-none"
             
             >
               <option value="daily">Today</option>

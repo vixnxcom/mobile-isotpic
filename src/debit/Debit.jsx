@@ -3,7 +3,7 @@ import { coins, credia, text } from '../assets'
 
 const Debit = () => {
   return (
-   <div className="min-h-screen bg-shapee shadow-sm rounded-[14px] border border-white">
+   <div className="min-h-screen bg-shape shadow-sm rounded-[14px] border border-white">
 
 
       

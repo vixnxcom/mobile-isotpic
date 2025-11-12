@@ -138,6 +138,7 @@ function App() {
             <Route path="/credit" element={<Credit />} />
             <Route path="/payroll" element={<Payroll />} />
             <Route path="/invoice" element={<Invoice />} />
+            <Route path="/debit" element={<Debit />} />
           </Routes>
         </div>
       </div>

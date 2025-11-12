@@ -636,7 +636,7 @@ const InvoiceGenerator = () => {
             }
           }
         `}</style>
-        <div className="min-h-screen bg-white rounded-lg py-8 mb border border-pink-100">
+        <div className="min-h-screen bg-white rounded-[14px] py-8 mb border border-gray-100">
           <div className="max-w-4xl mx-auto">
             <div className="no-print flex justify-between items-center mb-6">
               <button
@@ -708,8 +708,8 @@ const InvoiceGenerator = () => {
         </div>
       </div>
 
-      <div className="max-w-6xl bg-white mx-auto rounded-lg mt-8 shadow-sm">
-        <div className="bg-white p-6 border border-purple-100 rounded-lg">
+      <div className="max-w-7xl bg-white mx-auto rounded-[14px] mt-8  shadow-sm">
+        <div className="bg-white p-6 border border-purple-100 rounded-[14px]">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
             <div>
               <h2 className="text-xl aeon-bold text-pink-600 mb-4">Company Information</h2>

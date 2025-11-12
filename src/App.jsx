@@ -98,14 +98,14 @@ function App() {
               path="/"
               element={
                 <>
-                 <div className="bg-mobile w-full min-h-[80vh] max-h-[1000px]">
+                 <div className="bg-mobile w-full h-[800px]">
                    <div className='py-2 px-6 flex flex-row rounded-[16px] shadow-sm border border-purple-200 inter
                         text-xl bg-white flex items-left justify-left'>
                     <p className="mb-2 inter tracking-wide flex flex-row">
                       <span><img src={hand} className="w-8 mr-2" /></span>
                       <span className="mt-1">Hi, Welcome Back!</span>
                     </p>
-                    <p className="text-gray-500 text-sm mt-2 mx-2">What would you like to do today?</p>
+                    <p className="text-gray-500 text-[16px] mt-2 mx-2">What would you like to do today?</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">

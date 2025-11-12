@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 
 
 import Inventory from "./inventory/Inventory";
-import Credit from "./credit/Credit";
+import Credit from "./credit/Credittt";
 import Debit from "./debit/Debit";
 import Invoice from "./invoice/Invoice";
 import { useState } from "react";

@@ -435,7 +435,7 @@ background-color: #e00505;
 
 }
 .invoice-gradient{
-  background: linear-gradient(to bottom right, #000000, #831843); /* black to pink-900 */
+  background: linear-gradient(to bottom right, #000000, #790a36); /* black to pink-900 */
 }
 
 /* @media(min-width:2000px) {

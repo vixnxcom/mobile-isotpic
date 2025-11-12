@@ -1537,7 +1537,7 @@ const PayrollManagementSystem = () => {
                             </div>
                           </td>
                           <td className="px-6 py-4 whitespace-nowrap inter">
-                            <span className="inline-flex px-2 py-1 text-xs  rounded-full bg-green-100 text-green-900">
+                            <span className="inline-flex px-2 py-1 text-xs  rounded-full bg-green-50 border border-green-100 text-green-600">
                               Active
                             </span>
                           </td>
@@ -1988,10 +1988,10 @@ const PayrollManagementSystem = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs inter rounded-full ${
                           run.status === 'completed' 
-                            ? 'bg-green-50 border border-green-100 text-green-600'
+                            ? 'bg-green-100 text-green-600'
                             : run.status === 'processing'
-                            ? 'bg-orange-50 border border-orange-100 text-orange-600'
-                            : 'bg-blue-50 border border-blue-100 text-blue-600'
+                            ? 'bg-orange-100 text-orange-900'
+                            : 'bg-blue-100 text-blue-900'
                         }`}>
                           {run.status}
                         </span>
@@ -2379,7 +2379,7 @@ const PayrollManagementSystem = () => {
                                 </div>
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
-                                <span className="inline-flex px-2 py-1 text-xs inter rounded-full bg-green-100 text-green-600">
+                                <span className="inline-flex px-2 py-1 text-xs inter rounded-full bg-green-50 border border-green-100 text-green-600">
                                   Completed
                                 </span>
                               </td>

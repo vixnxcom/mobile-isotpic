@@ -676,7 +676,7 @@ const InvoiceGenerator = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-br from-black to-pink-900 backdrop-blur-lg shadow-sm border-b border-gray-500 rounded-[14px]">
+      <div className="invoice-gradient backdrop-blur-lg shadow-sm border-b border-gray-500 rounded-[14px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between items-center py-4">
             <div>

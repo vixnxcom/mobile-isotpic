@@ -429,6 +429,14 @@ background-color: #e00505;
 .inventory-gradient{
   background: linear-gradient(to bottom right, #000000, #051077); /* black to custom blue */
 }
+.payroll-gradient{
+  background: linear-gradient(to bottom right, #000000, green);
+
+
+}
+.invoice-gradient{
+  background: linear-gradient(to bottom right, #000000, #831843); /* black to pink-900 */
+}
 
 /* @media(min-width:2000px) {
   .bg-dash {

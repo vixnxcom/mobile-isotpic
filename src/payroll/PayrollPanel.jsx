@@ -1174,7 +1174,7 @@ const PayrollManagementSystem = () => {
 
           <div className=" mx-auto max-w-7xl">
 
-              <div className="bg-gradient-to-br from-black  to-[green] backdrop-blur-lg
+              <div className="payroll-gradient backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
 
            <div className=" px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">

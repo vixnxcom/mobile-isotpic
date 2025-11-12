@@ -53,7 +53,8 @@ function App() {
        <Link
                   to="/"
                   className="block hover:bg-purple-200 inter border flex flex-row 
-                  border-gray-200 px-1 py-2 bg-white rounded-[8px]"
+                  border-gray-200 px-1 py-2 bg-white rounded-[5px] outline-none
+                  "
                 >
                   <span>
                     <img src={home} className="w-5 h-5 mr-2" />
@@ -80,10 +81,10 @@ function App() {
         {/* Main Content */}
       <div className="flex-1 bg-purple-50 p-5 w-[100vw] min-h-screen">
           {/* Toggle Button */}
-           <button
+          <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="mb-4 px-4 py-2 bg-white flex flex-row items-center gap-2 text-xs 
-            border border-gray-200 rounded-[14px] hover:bg-purple-200"
+            border border-gray-300 shadow-xs rounded-[14px] hover:bg-purple-200 inter "
           >
             <img
               src={sidebarOpen ? close : open}
@@ -98,8 +99,8 @@ function App() {
               path="/"
               element={
                 <>
-                 <div className="bg-mobile w-full h-[800px]">
-                   <div className='py-2 px-6 flex flex-row rounded-[16px] shadow-sm border border-purple-200 inter
+                 <div className="bg-mobile w-full h-[600px]">
+                   <div className='py-2 px-6 flex flex-row rounded-[14px] shadow-sm border border-purple-200 inter
                         text-xl bg-white flex items-left justify-left'>
                     <p className="mb-2 inter tracking-wide flex flex-row">
                       <span><img src={hand} className="w-8 mr-2" /></span>

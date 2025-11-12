@@ -11,8 +11,8 @@ const InvoiceGenerator = () => {
       name: 'Your Company Name',
       address: '123 Business Street',
       city: 'Business City',
-      zipCode: '12345',
-      phone: '+1 (555) 123-4567',
+      zipCode: '960001',
+      phone: '+234 (555) 123-456',
       email: 'contact@company.com'
     },
     customer: {

@@ -2077,7 +2077,7 @@ export default function InventoryExpenseTracker() {
 
   return (
     <div className="min-h-screen bg-shapee shadow-sm rounded-[14px] border border-white">
-      <div className="bg-gradient-to-br from-black  to-[#051077] md:backdrop-blur-lg
+      <div className="inventory-gradient md:backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
           <div className="flex justify-between items-center py-4">

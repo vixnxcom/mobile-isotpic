@@ -422,6 +422,13 @@ background-color: #e00505;
   
 }
 
+.credit-gradient{
+ background: linear-gradient(to bottom right, #000000, #4b0082); /* black to purple */
+}
+
+.inventory-gradient{
+  background: linear-gradient(to bottom right, #000000, #051077); /* black to custom blue */
+}
 
 /* @media(min-width:2000px) {
   .bg-dash {

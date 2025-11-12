@@ -1602,26 +1602,30 @@ export default function InventoryExpenseTracker() {
             <select
               value={selectedProduct}
               onChange={(e) => setSelectedProduct(e.target.value)}
-              className="p-2 px-5 border rounded-[14px] border-gray-300 bg-white gray200 text-sm inter outline-none "
+              className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
             >
               {products.map(product => (
                 <option key={product} value={product}>{product}</option>
               ))}
             </select>
-            
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="p-2 px-5 border rounded-[14px] border-gray-300 bg-white gray200 text-sm inter outline-none "
+<select
+  value={selectedCategory}
+  onChange={(e) => setSelectedCategory(e.target.value)}
+      className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
             >
-              {categories.map(cat => (
-                <option key={cat} value={cat}>{cat}</option>
-              ))}
-            </select>
+  {categories.map((cat) => (
+    <option key={cat} value={cat} className="bg-white text-gray-700 hover:bg-blue-100">
+      {cat}
+    </option>
+  ))}
+</select>
+
+
             <select
               value={selectedPeriod}
               onChange={(e) => setSelectedPeriod(e.target.value)}
-              className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-sm  outline-none"
+             className="p-2 border rounded-[14px] border-gray-300 bg-white gray200 inter text-lg  outline-none"
+            
             >
               <option value="daily">Today</option>
               <option value="weekly">This Week</option>

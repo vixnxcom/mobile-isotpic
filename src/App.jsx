@@ -57,7 +57,7 @@ function App() {
                   "
                 >
                   <span>
-                    <img src={home} className="w-5 h-5 mr-2" />
+                    <img src={home} className="w-5 h-5 mr-2 mx-2" />
                   </span>
                   Home
                 </Link>
@@ -66,9 +66,9 @@ function App() {
             key={idx}
             to={item.path}
               className="flex flex-row items-center hover:bg-purple-200 inter border 
-                      border-gray-200 px-1 py-2 bg-white rounded-[8px]"
+                      border-gray-200 px-1 py-2  bg-white rounded-[8px]"
           >
-            <img src={item.icon} className="w-5 h-5 mr-2" />
+            <img src={item.icon} className="w-5 h-5 mr-2 mx-2" />
             {item.title}
           </Link>
         ))}
@@ -84,7 +84,7 @@ function App() {
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="mb-4 px-4 py-2 bg-white flex flex-row items-center gap-2 text-xs 
-            border border-gray-300 shadow-xs rounded-[14px] hover:bg-purple-200 inter "
+            border border-gray-300 shadow-xs rounded-[14px] hover:border-purple-400 hover:shadow-md inter "
           >
             <img
               src={sidebarOpen ? close : open}

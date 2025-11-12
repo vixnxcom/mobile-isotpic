@@ -430,7 +430,7 @@ background-color: #e00505;
   background: linear-gradient(to bottom right, #000000, #051077); /* black to custom blue */
 }
 .payroll-gradient{
-  background: linear-gradient(to bottom right, #000000, green);
+  background: linear-gradient(to bottom right, #000000, #005000);
 
 
 }

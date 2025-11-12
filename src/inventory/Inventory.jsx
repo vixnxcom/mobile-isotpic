@@ -1427,9 +1427,9 @@ export default function InventoryExpenseTracker() {
                   <tr key={expense.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
                     <td className="px-4 py-3 text-sm inter gray200 border-gray-200 border-r">{expense.productName}</td>
                     <td className="px-4 py-3 text-sm intermid  border-r border-gray-200">
-                        <span className="px-2 py-1 inter rounded-full text-xs bg-blue-100 text-blue-500 "> {expense.sku}</span> </td>
+                        <span className="px-2 py-1 inter rounded-full text-xs bg-blue-50 border border-blue-100 text-blue-500 "> {expense.sku}</span> </td>
                     <td className="px-4 py-3 text-sm border-r border-gray-200">
-                      <span className="px-2 py-1 bg-pink-100 text-pink-600 rounded-full text-xs">
+                      <span className="px-2 py-1 bg-pink-50 border border-pink-100 text-pink-600 rounded-full text-xs">
                         {expense.category}
                       </span>
                     </td>
@@ -1824,7 +1824,7 @@ export default function InventoryExpenseTracker() {
                   onClick={() => setDateFilter('all')}
                   className={`px-8 py-2 rounded-[14px] text-sm inter ${
                     dateFilter === 'all' 
-                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-100' 
+                     ? 'bg-blue-50 border border-blue-300 text-blue-600 hover:bg-blue-100 shadow-xs ' 
                       : 'bg-white text-gray-500 border border-gray-200'
                   }`}
                 >
@@ -1834,7 +1834,7 @@ export default function InventoryExpenseTracker() {
                   onClick={() => setDateFilter('daily')}
                 className={`px-8 py-2 rounded-[14px] text-sm inter ${
                     dateFilter === 'daily' 
-                     ? 'bg-gray-100 text-gray-700 hover:bg-gray-100' 
+                      ? 'bg-blue-50 border border-blue-300 text-blue-600 hover:bg-blue-100 shadow-sm ' 
                       : 'bg-white text-gray-500 border border-gray-200'
                   }`}
                 >
@@ -1844,7 +1844,7 @@ export default function InventoryExpenseTracker() {
                   onClick={() => setDateFilter('weekly')}
                   className={`px-4 py-2 rounded-[14px] text-sm inter ${
                     dateFilter === 'weekly' 
-                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-100' 
+                       ? 'bg-blue-50 border border-blue-300 text-blue-600 hover:bg-blue-100 shadow-xs ' 
                       : 'bg-white text-gray-500 border border-gray-200'
                   }`}
                 >
@@ -1854,7 +1854,7 @@ export default function InventoryExpenseTracker() {
                   onClick={() => setDateFilter('monthly')}
                   className={`px-4 py-2 rounded-[14px] text-sm inter ${
                     dateFilter === 'monthly' 
-                      ? 'bg-gray-100 text-gray-700 hover:bg-gray-100' 
+                       ? 'bg-blue-50 border border-blue-300 text-blue-600 hover:bg-blue-100 shadow-xs ' 
                       : 'bg-white text-gray-500 border border-gray-200'
                   }`}
                 >
@@ -1923,12 +1923,12 @@ export default function InventoryExpenseTracker() {
                       <td className="px-6 py-4 whitespace-nowrap text-sm inter text-gray-900">{expense.date}</td>
                       <td className="px-6 py-4 whitespace-nowrap text-sm inter text-gray-900">{expense.productName}</td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 inter rounded-full text-xs bg-blue-100 text-blue-500">
+                        <span className="px-2 py-1 inter rounded-full text-xs bg-blue-50 border border-blue-100 text-blue-500">
                           {expense.sku}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <span className="px-2 py-1 inter rounded-full text-xs bg-pink-100 text-pink-600">
+                        <span className="px-2 py-1 inter rounded-full text-xs bg-pink-50 border border-pink-100 text-pink-600">
                           {expense.category}
                         </span>
                       </td>

@@ -1741,8 +1741,8 @@ const banks = [
                             <td className="px-6 py-4">
                               <span className={`inline-flex px-3 py-1 inter rounded-full text-xs ${
                                 payment.status === 'success' 
-                                  ? 'bg-green-100 text-green-600' 
-                                  : 'bg-yellow-100 text-yellow-800'
+                                  ? 'bg-green-50 border border-green-100 text-green-600' 
+                                  : 'bg-yellow-50 border border-yellow-100 text-yellow-800'
                               }`}>
                                 {payment.status}
                               </span>

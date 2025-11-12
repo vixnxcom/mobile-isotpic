@@ -7,8 +7,11 @@ import Credit from "./credit/Credit";
 import Debit from "./debit/Debit";
 import Invoice from "./invoice/Invoice";
 import { useState } from "react";
+
+import Payroll from './payroll/PayrollPanel';
 import { admin, atm, brief, calc, close, credit, dcard, debit, file, hand, home, invent, invoice, open, pass } from "./assets";
-import PayrollManagementSystem from '../../../Desktop/ISXTXPES/src/payroll/PayrollPanel';
+
+
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -132,7 +135,7 @@ function App() {
             />
             <Route path="/inventory" element={<Inventory />} />
             <Route path="/credit" element={<Credit />} />
-            <Route path="payroll" element={<PayrollManagementSystem />} />
+            <Route path="/payroll" element={<Payroll />} />
             <Route path="/invoice" element={<Invoice />} />
           </Routes>
         </div>

@@ -634,26 +634,27 @@ export default function InventoryExpenseTracker() {
     })];
   }, [state.expenses]);
 
-  // FIXED: Enhanced date calculations with proper week calculation
+  // COMPLETELY REWRITTEN: Fixed date calculations with proper week calculation
   const getDateRanges = () => {
     const today = new Date();
     const todayStr = getTodayDateString();
     
-    // FIX: Proper week calculation - get Monday of current week
-    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
-    const monday = new Date(today);
+    // FIXED: Simple and reliable week calculation
+    const weekStart = new Date(today);
+    weekStart.setDate(today.getDate() - today.getDay() + (today.getDay() === 0 ? -6 : 1)); // Always get Monday
     
-    // Calculate Monday: if today is Sunday (0), go back 6 days, otherwise go back (dayOfWeek - 1) days
-    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-    monday.setDate(today.getDate() - daysToSubtract);
-    
-    const weekStart = getLocalDateString(monday);
+    const weekStartStr = getLocalDateString(weekStart);
     
     const monthStart = getLocalDateString(new Date(today.getFullYear(), today.getMonth(), 1));
     
-    console.log('Date ranges:', { todayStr, weekStart, monthStart, dayOfWeek, daysToSubtract });
+    console.log('=== DATE RANGES DEBUG ===');
+    console.log('Today:', todayStr);
+    console.log('Week Start:', weekStartStr);
+    console.log('Month Start:', monthStart);
+    console.log('Current Day of Week:', today.getDay()); // 0 = Sunday, 1 = Monday, etc.
+    console.log('========================');
     
-    return { todayStr, weekStart, monthStart };
+    return { todayStr, weekStart: weekStartStr, monthStart };
   };
 
   const getLastMonthStats = useMemo(() => {
@@ -663,40 +664,76 @@ export default function InventoryExpenseTracker() {
     return { label, startStr, endStr, rows, total, count: rows.length };
   }, [state.expenses]);
 
-  // Enhanced expense calculations with proper date comparison
+  // COMPLETELY REWRITTEN: Fixed expense calculations
   const calculateExpenses = useMemo(() => {
     const { todayStr, weekStart, monthStart } = getDateRanges();
     
-    console.log('Date ranges for calculations:', { todayStr, weekStart, monthStart });
+    console.log('=== CALCULATING EXPENSES ===');
+    console.log('Using date ranges:', { todayStr, weekStart, monthStart });
+
+    // Debug: Show all expenses and their dates
+    console.log('All expenses:', state.expenses.map(exp => ({
+      id: exp.id,
+      date: exp.date,
+      normalized: normalizeDateForComparison(exp.date),
+      product: exp.productName,
+      amount: exp.totalAmount
+    })));
 
     const filterByPeriod = (expenses, period) => {
+      let filteredExpenses = [];
+      
       switch (period) {
         case 'daily':
-          const dailyExpenses = expenses.filter(exp => normalizeDateForComparison(exp.date) === todayStr);
-          console.log('Daily expenses:', { 
-            totalExpenses: expenses.length, 
-            dailyCount: dailyExpenses.length,
-            today: todayStr,
-            sampleDates: expenses.slice(0, 3).map(e => ({ date: e.date, normalized: normalizeDateForComparison(e.date) }))
+          filteredExpenses = expenses.filter(exp => {
+            const normalizedDate = normalizeDateForComparison(exp.date);
+            const isToday = normalizedDate === todayStr;
+            return isToday;
           });
-          return dailyExpenses;
+          console.log(`Daily filter (${todayStr}):`, {
+            total: expenses.length,
+            filtered: filteredExpenses.length,
+            dates: filteredExpenses.map(e => e.date)
+          });
+          break;
+          
         case 'weekly':
-          const weeklyExpenses = expenses.filter(exp => normalizeDateForComparison(exp.date) >= weekStart);
-          console.log('Weekly expenses:', {
-            totalExpenses: expenses.length,
-            weeklyCount: weeklyExpenses.length,
-            weekStart: weekStart,
-            weekEnd: todayStr,
-            sampleDates: weeklyExpenses.slice(0, 3).map(e => ({ date: e.date, normalized: normalizeDateForComparison(e.date) }))
+          filteredExpenses = expenses.filter(exp => {
+            const normalizedDate = normalizeDateForComparison(exp.date);
+            const isInWeek = normalizedDate >= weekStart && normalizedDate <= todayStr;
+            return isInWeek;
           });
-          return weeklyExpenses;
+          console.log(`Weekly filter (${weekStart} to ${todayStr}):`, {
+            total: expenses.length,
+            filtered: filteredExpenses.length,
+            dates: filteredExpenses.map(e => e.date)
+          });
+          break;
+          
         case 'monthly':
-          return expenses.filter(exp => normalizeDateForComparison(exp.date) >= monthStart);
+          filteredExpenses = expenses.filter(exp => {
+            const normalizedDate = normalizeDateForComparison(exp.date);
+            const isInMonth = normalizedDate >= monthStart && normalizedDate <= todayStr;
+            return isInMonth;
+          });
+          console.log(`Monthly filter (${monthStart} to ${todayStr}):`, {
+            total: expenses.length,
+            filtered: filteredExpenses.length
+          });
+          break;
+          
         case 'alltime':
-          return expenses;
+          filteredExpenses = expenses;
+          console.log(`All time filter:`, {
+            total: expenses.length
+          });
+          break;
+          
         default:
-          return expenses;
+          filteredExpenses = expenses;
       }
+      
+      return filteredExpenses;
     };
 
     const filterByCategory = (expenses) => {
@@ -714,49 +751,53 @@ export default function InventoryExpenseTracker() {
     const filteredByBoth = filterByProduct(filteredByCategory);
     const filteredExpenses = filterByPeriod(filteredByBoth, selectedPeriod);
     
-    const totalExpense = filteredExpenses.reduce((sum, exp) => sum + exp.totalAmount, 0);
+    const totalExpense = filteredExpenses.reduce((sum, exp) => sum + (parseFloat(exp.totalAmount) || 0), 0);
 
-    const categoryTotals = {};
-    state.expenses.forEach(exp => {
-      const normalizedDate = normalizeDateForComparison(exp.date);
-      if (!categoryTotals[exp.category]) {
-        categoryTotals[exp.category] = { 
-          daily: 0, 
-          weekly: 0, 
-          monthly: 0,
-          alltime: 0
-        };
-      }
-      if (normalizedDate === todayStr) categoryTotals[exp.category].daily += exp.totalAmount;
-      if (normalizedDate >= weekStart) categoryTotals[exp.category].weekly += exp.totalAmount;
-      if (normalizedDate >= monthStart) categoryTotals[exp.category].monthly += exp.totalAmount;
-      categoryTotals[exp.category].alltime += exp.totalAmount;
-    });
-
+    // Calculate totals for different periods
     const dailyTotal = state.expenses
       .filter(exp => normalizeDateForComparison(exp.date) === todayStr)
-      .reduce((sum, exp) => sum + exp.totalAmount, 0);
+      .reduce((sum, exp) => sum + (parseFloat(exp.totalAmount) || 0), 0);
 
     const weeklyTotal = state.expenses
-      .filter(exp => normalizeDateForComparison(exp.date) >= weekStart)
-      .reduce((sum, exp) => sum + exp.totalAmount, 0);
+      .filter(exp => {
+        const normalizedDate = normalizeDateForComparison(exp.date);
+        return normalizedDate >= weekStart && normalizedDate <= todayStr;
+      })
+      .reduce((sum, exp) => sum + (parseFloat(exp.totalAmount) || 0), 0);
 
     const monthlyTotal = state.expenses
-      .filter(exp => normalizeDateForComparison(exp.date) >= monthStart)
-      .reduce((sum, exp) => sum + exp.totalAmount, 0);
+      .filter(exp => {
+        const normalizedDate = normalizeDateForComparison(exp.date);
+        return normalizedDate >= monthStart && normalizedDate <= todayStr;
+      })
+      .reduce((sum, exp) => sum + (parseFloat(exp.totalAmount) || 0), 0);
+
+    const alltimeTotal = state.expenses
+      .reduce((sum, exp) => sum + (parseFloat(exp.totalAmount) || 0), 0);
+
+    console.log('=== CALCULATION RESULTS ===');
+    console.log('Daily total:', dailyTotal);
+    console.log('Weekly total:', weeklyTotal);
+    console.log('Monthly total:', monthlyTotal);
+    console.log('All time total:', alltimeTotal);
+    console.log('Filtered expenses count:', filteredExpenses.length);
+    console.log('===========================');
 
     return {
       daily: dailyTotal,
       weekly: weeklyTotal,
       monthly: monthlyTotal,
-      alltime: state.expenses.reduce((sum, exp) => sum + exp.totalAmount, 0),
+      alltime: alltimeTotal,
       filtered: totalExpense,
-      categoryTotals,
       filteredExpenses,
       debug: {
         today: todayStr,
+        weekStart: weekStart,
         dailyCount: state.expenses.filter(exp => normalizeDateForComparison(exp.date) === todayStr).length,
-        weeklyCount: state.expenses.filter(exp => normalizeDateForComparison(exp.date) >= weekStart).length
+        weeklyCount: state.expenses.filter(exp => {
+          const normalizedDate = normalizeDateForComparison(exp.date);
+          return normalizedDate >= weekStart && normalizedDate <= todayStr;
+        }).length
       }
     };
   }, [state.expenses, selectedPeriod, selectedCategory, selectedProduct]);
@@ -881,26 +922,21 @@ export default function InventoryExpenseTracker() {
   const dateFilteredExpenses = useMemo(() => {
     if (dateFilter === 'all') return filteredHistoryExpenses;
     
-    const today = new Date();
+    const { todayStr, weekStart, monthStart } = getDateRanges();
     let startDate, endDate;
 
     switch (dateFilter) {
       case 'daily':
-        startDate = getTodayDateString();
-        endDate = getTodayDateString();
+        startDate = todayStr;
+        endDate = todayStr;
         break;
       case 'weekly':
-        // FIX: Use the same week calculation as getDateRanges()
-        const dayOfWeek = today.getDay();
-        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-        const monday = new Date(today);
-        monday.setDate(today.getDate() - daysToSubtract);
-        startDate = getLocalDateString(monday);
-        endDate = getTodayDateString();
+        startDate = weekStart;
+        endDate = todayStr;
         break;
       case 'monthly':
-        startDate = getLocalDateString(new Date(today.getFullYear(), today.getMonth(), 1));
-        endDate = getTodayDateString();
+        startDate = monthStart;
+        endDate = todayStr;
         break;
       case 'custom':
         startDate = customStartDate;
@@ -910,9 +946,16 @@ export default function InventoryExpenseTracker() {
         return filteredHistoryExpenses;
     }
 
-    return filteredHistoryExpenses.filter(expense => 
+    const filtered = filteredHistoryExpenses.filter(expense => 
       expense.date >= startDate && expense.date <= endDate
     );
+
+    console.log(`History filter (${dateFilter}: ${startDate} to ${endDate}):`, {
+      total: filteredHistoryExpenses.length,
+      filtered: filtered.length
+    });
+
+    return filtered;
   }, [filteredHistoryExpenses, dateFilter, customStartDate, customEndDate]);
 
   const paginatedHistoryExpenses = useMemo(() => {
@@ -935,24 +978,17 @@ export default function InventoryExpenseTracker() {
     const totalAmount = dateFilteredExpenses.reduce((sum, exp) => sum + exp.totalAmount, 0);
     
     let dateRangeLabel = 'All Time';
-    const today = new Date();
+    const { todayStr, weekStart, monthStart } = getDateRanges();
     
     switch (dateFilter) {
       case 'daily':
-        dateRangeLabel = `Daily - ${getTodayDateString()}`;
+        dateRangeLabel = `Daily - ${todayStr}`;
         break;
       case 'weekly':
-        // FIX: Use same week calculation for consistency
-        const dayOfWeek = today.getDay();
-        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
-        const monday = new Date(today);
-        monday.setDate(today.getDate() - daysToSubtract);
-        const weekStart = getLocalDateString(monday);
-        dateRangeLabel = `Weekly - ${weekStart} to ${getTodayDateString()}`;
+        dateRangeLabel = `Weekly - ${weekStart} to ${todayStr}`;
         break;
       case 'monthly':
-        const monthStart = getLocalDateString(new Date(today.getFullYear(), today.getMonth(), 1));
-        dateRangeLabel = `Monthly - ${monthStart} to ${getTodayDateString()}`;
+        dateRangeLabel = `Monthly - ${monthStart} to ${todayStr}`;
         break;
       case 'custom':
         dateRangeLabel = `Custom - ${customStartDate} to ${customEndDate}`;
@@ -1036,24 +1072,30 @@ export default function InventoryExpenseTracker() {
     }, 250);
   };
 
-  // Add date debug panel to dashboard
+  // Enhanced debug panel
   const renderDateDebugPanel = () => (
-    <div className="">
-      {/* <h4 className="text-sm font-bold text-yellow-800 mb-2">Date Debug Info</h4> */}
-    
-        {/* <div>
+    <div className="bg-yellow-50 p-4 rounded-lg border border-yellow-200 mb-4">
+      <h4 className="text-sm font-bold text-yellow-800 mb-2">Debug Information</h4>
+      <div className="grid grid-cols-2 gap-2 text-xs">
+        <div>
           <span className="font-medium">Today:</span> {getTodayDateString()}
-        </div> */}
-        {/* <div>
-          <span className="font-medium">Timezone:</span> {Intl.DateTimeFormat().resolvedOptions().timeZone}
-        </div> */}
-        {/* <div>
+        </div>
+        <div>
+          <span className="font-medium">Week Start:</span> {getDateRanges().weekStart}
+        </div>
+        <div>
           <span className="font-medium">Today's Expenses:</span> {calculateExpenses.debug.dailyCount}
-        </div> */}
-        {/* <div>
-          <span className="font-medium">Local Time:</span> {new Date().toLocaleString()}
-        </div> */}
-   
+        </div>
+        <div>
+          <span className="font-medium">This Week's Expenses:</span> {calculateExpenses.debug.weeklyCount}
+        </div>
+        <div>
+          <span className="font-medium">Total Expenses:</span> {state.expenses.length}
+        </div>
+        <div>
+          <span className="font-medium">Timezone:</span> {Intl.DateTimeFormat().resolvedOptions().timeZone}
+        </div>
+      </div>
     </div>
   );
 
@@ -1108,8 +1150,8 @@ export default function InventoryExpenseTracker() {
         </div>
       </div>
 
-      {/* Add debug panel - remove this in production */}
-      {process.env.NODE_ENV === 'development' && renderDateDebugPanel()}
+      {/* Debug panel - you can remove this in production */}
+      {/* {process.env.NODE_ENV === 'development' && renderDateDebugPanel()} */}
 
       {/* Connection Status Banner */}
       {connectionStatus === 'disconnected' && (
@@ -1161,9 +1203,9 @@ export default function InventoryExpenseTracker() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-blue-50 text-sm inter font-medium"> Today's Expenses</p>
-                  <p className="text-2xl aeon-bold text-white">{formatNaira(calculateExpenses.daily)}</p>
-                  <p className="text-blue-100 text-xs mt-1">
-                    {state.expenses.filter(exp => normalizeDateForComparison(exp.date) === getTodayDateString()).length} records
+                  <p className="text-2xl aeon-bold text-white mt-1 ">{formatNaira(calculateExpenses.daily)}</p>
+                  <p className="text-blue-100 text-xs mt-3 aeon-bold">
+                    {calculateExpenses.debug.dailyCount} records
                   </p>
                 </div>
                 <div className='w-14 h-14 rounded-full bg-blue-50 border shadow-md border-white'>
@@ -1176,8 +1218,8 @@ export default function InventoryExpenseTracker() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-green-50 text-sm inter font-medium">This Week's Expenses</p>
-                  <p className="text-2xl aeon-bold text-white">{formatNaira(calculateExpenses.weekly)}</p>
-                  <p className="text-green-100 text-xs mt-1">
+                  <p className="text-2xl aeon-bold text-white mt-1">{formatNaira(calculateExpenses.weekly)}</p>
+                  <p className="text-green-100 text-xs mt-3 aeon-bold">
                     {calculateExpenses.debug.weeklyCount} records this week
                   </p>
                 </div>
@@ -1191,7 +1233,13 @@ export default function InventoryExpenseTracker() {
               <div className="flex items-center justify-between">
                 <div>
                   <p className="text-purple-50 text-sm inter font-medium">This Month's Expenses</p>
-                  <p className="text-2xl aeon-bold text-white">{formatNaira(calculateExpenses.monthly)}</p>
+                  <p className="text-2xl aeon-bold text-white mt-1">{formatNaira(calculateExpenses.monthly)}</p>
+                  <p className="text-purple-100 text-xs mt-3 aeon-bold">
+                    {state.expenses.filter(exp => {
+                      const normalizedDate = normalizeDateForComparison(exp.date);
+                      return normalizedDate >= getDateRanges().monthStart && normalizedDate <= getDateRanges().todayStr;
+                    }).length} records this month
+                  </p>
                 </div>
                 <div className='w-14 h-14 rounded-full bg-purple-50 border shadow-md border-white'>
                   <img src={pack} className="p-3 text-purple-500" />
@@ -1219,73 +1267,23 @@ export default function InventoryExpenseTracker() {
             </p>
           </div>
 
-          {Object.keys(calculateExpenses.categoryTotals).length > 0 ? (
+          {state.expenses.length > 0 ? (
             <div className="bg-white p-6 rounded-[14px] border border-gray-200">
-              <h3 className="text-lg aeon-bold gray200 mb-6">Top Expenses by Category</h3>
-              {(() => {
-                const categoryData = Object.entries(calculateExpenses.categoryTotals)
-                  .map(([category, totals]) => ({
-                    category,
-                    amount: totals.alltime,
-                    percentage: (totals.alltime / calculateExpenses.alltime) * 100
-                  }))
-                  .sort((a, b) => b.amount - a.amount);
-
-                const topCategories = categoryData.slice(0, 5);
-                const othersAmount = categoryData.slice(5).reduce((sum, item) => sum + item.amount, 0);
-                const othersPercentage = (othersAmount / calculateExpenses.alltime) * 100;
-
-                const displayCategories = othersAmount > 0 
-                  ? [...topCategories, { category: 'Others', amount: othersAmount, percentage: othersPercentage }]
-                  : topCategories;
-
-                const maxAmount = Math.max(...displayCategories.map(item => item.amount));
-
-                return (
-                  <div className="space-y-4">
-                    {displayCategories.map((item, index) => {
-                      const barWidth = (item.amount / maxAmount) * 100;
-                      const colors = [
-                        'bg-blue-500', 'bg-green-500', 'bg-purple-500', 
-                        'bg-orange-500', 'bg-pink-500', 'bg-gray-400'
-                      ];
-                      
-                      return (
-                        <div key={item.category} className="space-y-2">
-                          <div className="flex justify-between items-center">
-                            <div className="flex items-center space-x-3">
-                              <div className={`w-3 h-3 rounded-full ${colors[index] || 'bg-gray-400'}`}></div>
-                              <span className="text-sm intermid gray200 min-w-[100px]">
-                                {item.category}
-                              </span>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-sm intermid gray200">{formatNaira(item.amount)}</p>
-                              <p className="text-xs inter text-gray-500">{item.percentage.toFixed(1)}%</p>
-                            </div>
-                          </div>
-                          
-                          <div className="w-full bg-gray-200 rounded-full h-3">
-                            <div 
-                              className={`h-3 rounded-full ${colors[index] || 'bg-gray-400'} transition-all duration-500`}
-                              style={{ width: `${barWidth}%` }}
-                            ></div>
-                          </div>
-                        </div>
-                      );
-                    })}
-                    
-                    <div className="pt-4 border-t border-gray-200">
-                      <div className="flex justify-between items-center">
-                        <span className="text-sm inter text-gray-600">Total All Time</span>
-                        <span className="text-lg aeon-bold text-green-600">
-                          {formatNaira(calculateExpenses.alltime)}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                );
-              })()}
+              <h3 className="text-lg aeon-bold gray200 mb-6">Expenses Summary</h3>
+              <div className="space-y-4">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm inter text-gray-600">Total All Time Expenses</span>
+                  <span className="text-lg aeon-bold text-green-600">
+                    {formatNaira(calculateExpenses.alltime)}
+                  </span>
+                </div>
+                <div className="flex justify-between items-center">
+                  <span className="text-sm inter text-gray-600">Total Expenses Count</span>
+                  <span className="text-lg aeon-bold text-blue-600">
+                    {state.expenses.length} records
+                  </span>
+                </div>
+              </div>
             </div>
           ) : (
             <div className="bg-white p-6 rounded-[14px] border border-indigo-100">
@@ -1294,7 +1292,7 @@ export default function InventoryExpenseTracker() {
                   <img src={box} className="opacity-50 p-2 mx-auto mb-4" />
                 </div>
                 <p className="mb-2 inter">No expenses recorded yet</p>
-                <p className="text-sm inter">Start by adding your first expense to see category breakdowns here.</p>
+                <p className="text-sm inter">Start by adding your first expense to see analytics here.</p>
               </div>
             </div>
           )}
@@ -1302,6 +1300,8 @@ export default function InventoryExpenseTracker() {
       )}
     </div>
   );
+
+  // ... rest of the component remains the same (renderExpenses, renderModal, renderReports, renderHistory)
 
   const renderExpenses = () => (
     <div className="space-y-6">
@@ -1420,6 +1420,7 @@ export default function InventoryExpenseTracker() {
         <p className="text-blue-600">
           <span className="aeon-bold">Today's Total Expenses: </span>
           <span className="text-xl aeon-bold">{formatNaira(calculateExpenses.daily)}</span>
+          <span className="text-sm inter text-blue-500 ml-2">({calculateExpenses.debug.dailyCount} records)</span>
         </p>
       </div>
 
@@ -2103,7 +2104,7 @@ export default function InventoryExpenseTracker() {
 
   return (
     <div className="min-h-screen bg-shapee shadow-sm rounded-[14px] border border-white">
-      <div className="inventory-gradient backdrop-blur-lg
+           <div className="inventory-gradient backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
           <div className="flex justify-between items-center py-4">

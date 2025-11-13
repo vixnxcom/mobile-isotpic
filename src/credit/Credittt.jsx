@@ -64,7 +64,7 @@ const PaystackPayment = () => {
   const [paymentAmounts, setPaymentAmounts] = useState({});
 
   // Google Apps Script Configuration - REPLACE WITH YOUR WEB APP URL
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxroObZlIEIDbyh52LRC-VRW2hOI29d6E7gGAGPRg_vCZ2kRsyn38tWsMcTQMVCidjWxQ/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykDZ-lrcPBGe_t1bZx6yFziizADKPeqZxdCeS1L833h4IenFPq4DNEZutsbW1yGbw9/exec';
 
   // Paystack configuration (for inline Paystack modal only - public key is safe to keep client-side)
   const PAYSTACK_PUBLIC_KEY = 'pk_test_aa9fab935a0de3dda723d27a2c97257831820cbc';
@@ -1856,7 +1856,7 @@ const banks = [
 
 
 
-                              <div className="credit-bg rounded-[14px] p-4 text-white">
+                              <div className="bg-gradient-to-r from-blue-800 to-purple-800  rounded-[14px] p-4 text-white">
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg aeon-bold mb-2">Total Credit Spendings</h3>
@@ -1893,8 +1893,8 @@ const banks = [
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-blue-50 text-sm inter font-medium">Today</p>
-                      <p className="text-2xl text-blue-50 aeon-bold">₦{analytics.todaySpent.toLocaleString()}</p>
-                      <p className="text-xs aeon-bold text-blue-200 mt-1">
+                      <p className="text-2xl text-blue-50 aeon-bold mt-1">₦{analytics.todaySpent.toLocaleString()}</p>
+                      <p className="text-xs aeon-bold text-blue-200 mt-3">
                         {payments.filter(p => new Date(p.date).toDateString() === new Date().toDateString()).length} transactions
                       </p>
                     </div>
@@ -1908,7 +1908,7 @@ const banks = [
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-green-50 text-sm inter font-medium">This Week</p>
-                      <p className="text-2xl text-green-50 aeon-bold">₦{(() => {
+                      <p className="text-2xl text-green-50 aeon-bold mt-1">₦{(() => {
                         const now = new Date();
                         const weekStart = new Date(now);
                         weekStart.setDate(weekStart.getDate() - weekStart.getDay());
@@ -1916,7 +1916,7 @@ const banks = [
                         return payments.filter(p => new Date(p.date) >= weekStart)
                           .reduce((sum, p) => sum + p.amount, 0).toLocaleString();
                       })()}</p>
-                      <p className="text-xs aeon-bold text-green-200 mt-1">
+                      <p className="text-xs aeon-bold text-green-200 mt-3">
                         {(() => {
                           const now = new Date();
                           const weekStart = new Date(now);
@@ -1936,8 +1936,8 @@ const banks = [
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-purple-100 inter text-sm font-medium">This Month</p>
-                      <p className="text-2xl text-purple-50 aeon-bold">₦{analytics.monthlySpent.toLocaleString()}</p>
-                      <p className="text-xs aeon-bold text-purple-200 mt-1">
+                      <p className="text-2xl text-purple-50 aeon-bold mt-1">₦{analytics.monthlySpent.toLocaleString()}</p>
+                      <p className="text-xs aeon-bold text-purple-200 mt-3">
                         {payments.filter(p => {
                           const paymentDate = new Date(p.date);
                           const now = new Date();

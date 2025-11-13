@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Users, Calendar, DollarSign, Download, Printer, Search, Filter, Plus, Mail, Phone, Building, IdCard, Loader2, Eye, EyeOff, Cloud, X, ChevronLeft, ChevronRight, PanelTopClose, FolderClosed, EyeClosed, FolderClosedIcon, XCircle } from 'lucide-react';
+import { Users, Calendar, DollarSign, Download, Printer, Search, Filter, Plus, Mail, Phone, Building, IdCard, Loader2, Eye, EyeOff, Cloud, X, ChevronLeft, ChevronRight, PanelTopClose, FolderClosed, EyeClosed, FolderClosedIcon, XCircle, Trash2 } from 'lucide-react';
 import { add, check, cloudd, coins, debitc, edit, salary, text, tick, user } from '../assets';
 
 const PayrollManagementSystem = () => {
@@ -36,7 +36,7 @@ const PayrollManagementSystem = () => {
   });
 
   // Google Apps Script Web App URL - REPLACE WITH YOURS
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwQE9gIi2chxmpcc_3uNHbmH1PlmS-KzyD9gSXzwuyBFA3IFrxCQ5EoQB9uCtqh9wys/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbw9HcYwMfn127pH0siApDjIuphdDzm0UQcD0OHvwZ0MlS3HwBY4bn5wQ-vhjH4w79EB/exec';
 
   // Employee form state
   const [employeeForm, setEmployeeForm] = useState({
@@ -181,6 +181,60 @@ const PayrollManagementSystem = () => {
       return result.data; // expect { status: 'success'|'failed'|'pending', ... }
     } catch (error) {
       throw error;
+    }
+  };
+
+  // NEW: Delete employee function
+  const deleteEmployeeFromSheets = async (employeeId) => {
+    try {
+      const params = new URLSearchParams({
+        action: 'deleteEmployee',
+        employeeId: employeeId
+      });
+      
+      const response = await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`, {
+        method: 'GET',
+        mode: 'cors'
+      });
+      
+      if (!response.ok) throw new Error(`HTTP ${response.status}`);
+      
+      const result = await response.json();
+      if (!result.success) throw new Error(result.error);
+      
+      setConnectionStatus('connected');
+      return result.data;
+    } catch (error) {
+      setConnectionStatus('error');
+      throw error;
+    }
+  };
+
+  // NEW: Handle employee deletion
+  const handleDeleteEmployee = async (employeeId, employeeName) => {
+    if (!confirm(`Are you sure you want to delete ${employeeName}? This action cannot be undone.`)) {
+      return;
+    }
+
+    setIsLoading(true);
+    try {
+      // Delete from Google Sheets
+      await deleteEmployeeFromSheets(employeeId);
+      
+      // Update local state
+      setEmployees(prev => prev.filter(emp => emp.id !== employeeId));
+      
+      // Also remove from any selected employees in payroll run
+      setPayrollRun(prev => ({
+        ...prev,
+        selectedEmployees: prev.selectedEmployees.filter(id => id !== employeeId)
+      }));
+
+      alert('Employee deleted successfully!');
+    } catch (error) {
+      alert('Error deleting employee: ' + error.message);
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -1477,7 +1531,7 @@ const PayrollManagementSystem = () => {
                 </div>
               ) : (
                        <div className="overflow-x-auto bg-white rounded-b-2xl  border border-gray-50">
-                      <table className="w-[67vw] mx-auto border-collapse">
+                      <table className="w-[70vw] mx-auto border-collapse">
                    <thead className=" bg-blue-50  ">
                       <tr>
                        <th className="px-6 py-3 text-left text-xs inter gray200 uppercase tracking-wider ">
@@ -1495,12 +1549,15 @@ const PayrollManagementSystem = () => {
                         <th className="px-6 py-3 text-left text-xs inter gray200 uppercase tracking-wider ">
                           Status
                         </th>
+                        <th className="px-6 py-3 text-left text-xs inter gray200 uppercase tracking-wider ">
+                          Actions
+                        </th>
                       </tr>
                     </thead>
-                    <tbody className="bg-white divide-y divide-green-100 rounded-[14px]">
+                    <tbody className="bg-white divide-y  divide-green-100 rounded-[14px]">
                       {employees.map(employee => (
                         <tr key={employee.id} className="hover:bg-gray-50">
-                          <td className="px-6 py-4 whitespace-nowrap">
+                          <td className="px-3 py-4 whitespace-nowrap">
                             <div>
                               <div className="text-xs intermid text-blue-500 uppercase tracking-wide">
                                 {employee.firstName} {employee.lastName}
@@ -1540,6 +1597,17 @@ const PayrollManagementSystem = () => {
                             <span className="inline-flex px-2 py-1 text-xs  rounded-full bg-green-50 border border-green-100 text-green-600">
                               Active
                             </span>
+                          </td>
+                          <td className="px-6 py-4 whitespace-nowrap">
+                            <button
+                              onClick={() => handleDeleteEmployee(employee.id, `${employee.firstName} ${employee.lastName}`)}
+                              disabled={isLoading}
+                              className="text-gray-700 mx-5 hover:text-red-600 border border-gray-300 p-1 rounded-[6px] hover:bg-red-50
+                               transition-colors disabled:opacity-50 hover:border-red-300 disabled:cursor-not-allowed"
+                              title="Delete Employee"
+                            >
+                              <Trash2 className="w-4 h-4" />
+                            </button>
                           </td>
                         </tr>
                       ))}
@@ -1870,7 +1938,7 @@ const PayrollManagementSystem = () => {
     </div>
 
     {/* Total Payroll Spending Summary */}
-    <div className="bg-gradient-to-r from-blue-800 to-purple-800  rounded-[14px] p-4 text-white">
+    <div className="credit-bg  rounded-[14px] p-4 text-white">
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg aeon-bold mb-2">Total Payroll Spending</h3>
@@ -1971,8 +2039,8 @@ const PayrollManagementSystem = () => {
                   const employeeNames = getEmployeeNamesForRun(run);
                   return (
                     <tr key={run.id} className="hover:bg-gray-50">
-                      <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm inter text-gray-900">{run.name}</div>
+                      <td className="px-3 py-4 whitespace-nowrap">
+                        <div className="text-sm inter gray200">{run.name}</div>
                         <td className=" py-2 whitespace-nowrap">
                         <div className="text-xs font-mono text-gray-500">{run.period}</div>
                       </td>
@@ -1988,16 +2056,16 @@ const PayrollManagementSystem = () => {
                       <td className="px-6 py-4 whitespace-nowrap">
                         <span className={`inline-flex px-2 py-1 text-xs inter rounded-full ${
                           run.status === 'completed' 
-                            ? 'bg-green-100 text-green-600'
+                            ? 'bg-green-50 border border-green-100  text-green-600'
                             : run.status === 'processing'
-                            ? 'bg-orange-100 text-orange-900'
-                            : 'bg-blue-100 text-blue-900'
+                            ? 'bg-orange-50 border border-orange-100 text-orange-600'
+                            : 'bg-blue-50 border border-blue-100  text-blue-600'
                         }`}>
                           {run.status}
                         </span>
                       </td>
                       <td className="px-6 py-4 whitespace-nowrap">
-                        <div className="text-sm text-gray-900">
+                        <div className="text-sm gray200">
                           {new Date(run.createdAt).toLocaleDateString()}
                         </div>
                       </td>
@@ -2118,7 +2186,7 @@ const PayrollManagementSystem = () => {
             </div>
 
             {/* Total Payroll Spending Summary */}
-            <div className="bg-gradient-to-r from-blue-800 to-purple-800 rounded-[14px] p-4 text-white">
+            <div className="credit-bg rounded-[14px] p-4 text-white">
               <div className="flex justify-between items-center">
                 <div>
                   <h3 className="text-lg aeon-bold mb-2">Total Organizational Spending</h3>

@@ -437,7 +437,14 @@ background-color: #e00505;
 .invoice-gradient{
   background: linear-gradient(to bottom right, #000000, #790a36); /* black to pink-900 */
 }
+.credit-bg{
+  background: linear-gradient(to right, #1e40af, #6b21a8);
 
+}
+
+.payroll-bg{
+  
+}
 /* @media(min-width:2000px) {
   .bg-dash {
     background-size: 50%;

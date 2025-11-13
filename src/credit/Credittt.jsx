@@ -64,7 +64,7 @@ const PaystackPayment = () => {
   const [paymentAmounts, setPaymentAmounts] = useState({});
 
   // Google Apps Script Configuration - REPLACE WITH YOUR WEB APP URL
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxI2Iqy75r2i2nLP03W8d5-z_vnlMAzYd5wQnRyO94-IVfzrNm8ipySuZe3ui_Xvd1p8g/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxroObZlIEIDbyh52LRC-VRW2hOI29d6E7gGAGPRg_vCZ2kRsyn38tWsMcTQMVCidjWxQ/exec';
 
   // Paystack configuration (for inline Paystack modal only - public key is safe to keep client-side)
   const PAYSTACK_PUBLIC_KEY = 'pk_test_aa9fab935a0de3dda723d27a2c97257831820cbc';
@@ -1200,7 +1200,8 @@ const banks = [
       <div className="max-w-7xl mx-auto">
         {/* Header */}
      <div className="rounded-[14px] pt-4 pr-8 pb-0 pl-8 
-    mb-8 text-white text-left credit-gradient backdrop-shadow-sm">
+    mb-8 text-white text-left  bg-gradient-to-br 
+                from-black to-purple-900 backdrop-shadow-sm">
 
           <div className="flex mb-1 justify-between items-start">
             <div className="flex">
@@ -1742,7 +1743,7 @@ const banks = [
                               <span className={`inline-flex px-3 py-1 inter rounded-full text-xs ${
                                 payment.status === 'success' 
                                   ? 'bg-green-50 border border-green-100 text-green-600' 
-                                  : 'bg-yellow-50 border border-yellow-100 text-yellow-800'
+                                  : 'bg-yellow-50 border border-yellow-100 text-yellow-600'
                               }`}>
                                 {payment.status}
                               </span>
@@ -1855,7 +1856,7 @@ const banks = [
 
 
 
-                              <div className="bg-gradient-to-r from-blue-800 to-purple-800  rounded-[14px] p-4 text-white">
+                              <div className="credit-bg rounded-[14px] p-4 text-white">
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg aeon-bold mb-2">Total Credit Spendings</h3>

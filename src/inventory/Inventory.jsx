@@ -634,18 +634,24 @@ export default function InventoryExpenseTracker() {
     })];
   }, [state.expenses]);
 
-  // Enhanced date calculations with timezone awareness
+  // FIXED: Enhanced date calculations with proper week calculation
   const getDateRanges = () => {
     const today = new Date();
     const todayStr = getTodayDateString();
     
-    const day = today.getDay();
-    const mondayOffset = (day + 6) % 7;
+    // FIX: Proper week calculation - get Monday of current week
+    const dayOfWeek = today.getDay(); // 0 = Sunday, 1 = Monday, etc.
     const monday = new Date(today);
-    monday.setDate(today.getDate() - mondayOffset);
+    
+    // Calculate Monday: if today is Sunday (0), go back 6 days, otherwise go back (dayOfWeek - 1) days
+    const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
+    monday.setDate(today.getDate() - daysToSubtract);
+    
     const weekStart = getLocalDateString(monday);
     
     const monthStart = getLocalDateString(new Date(today.getFullYear(), today.getMonth(), 1));
+    
+    console.log('Date ranges:', { todayStr, weekStart, monthStart, dayOfWeek, daysToSubtract });
     
     return { todayStr, weekStart, monthStart };
   };
@@ -675,7 +681,15 @@ export default function InventoryExpenseTracker() {
           });
           return dailyExpenses;
         case 'weekly':
-          return expenses.filter(exp => normalizeDateForComparison(exp.date) >= weekStart);
+          const weeklyExpenses = expenses.filter(exp => normalizeDateForComparison(exp.date) >= weekStart);
+          console.log('Weekly expenses:', {
+            totalExpenses: expenses.length,
+            weeklyCount: weeklyExpenses.length,
+            weekStart: weekStart,
+            weekEnd: todayStr,
+            sampleDates: weeklyExpenses.slice(0, 3).map(e => ({ date: e.date, normalized: normalizeDateForComparison(e.date) }))
+          });
+          return weeklyExpenses;
         case 'monthly':
           return expenses.filter(exp => normalizeDateForComparison(exp.date) >= monthStart);
         case 'alltime':
@@ -741,7 +755,8 @@ export default function InventoryExpenseTracker() {
       filteredExpenses,
       debug: {
         today: todayStr,
-        dailyCount: state.expenses.filter(exp => normalizeDateForComparison(exp.date) === todayStr).length
+        dailyCount: state.expenses.filter(exp => normalizeDateForComparison(exp.date) === todayStr).length,
+        weeklyCount: state.expenses.filter(exp => normalizeDateForComparison(exp.date) >= weekStart).length
       }
     };
   }, [state.expenses, selectedPeriod, selectedCategory, selectedProduct]);
@@ -862,6 +877,7 @@ export default function InventoryExpenseTracker() {
     });
   }, [state.expenses, historySearchTerm]);
 
+  // FIXED: Enhanced date filtering with proper week calculation
   const dateFilteredExpenses = useMemo(() => {
     if (dateFilter === 'all') return filteredHistoryExpenses;
     
@@ -874,10 +890,11 @@ export default function InventoryExpenseTracker() {
         endDate = getTodayDateString();
         break;
       case 'weekly':
-        const day = today.getDay();
-        const mondayOffset = (day + 6) % 7;
+        // FIX: Use the same week calculation as getDateRanges()
+        const dayOfWeek = today.getDay();
+        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
         const monday = new Date(today);
-        monday.setDate(today.getDate() - mondayOffset);
+        monday.setDate(today.getDate() - daysToSubtract);
         startDate = getLocalDateString(monday);
         endDate = getTodayDateString();
         break;
@@ -925,11 +942,13 @@ export default function InventoryExpenseTracker() {
         dateRangeLabel = `Daily - ${getTodayDateString()}`;
         break;
       case 'weekly':
-        const day = today.getDay();
-        const mondayOffset = (day + 6) % 7;
+        // FIX: Use same week calculation for consistency
+        const dayOfWeek = today.getDay();
+        const daysToSubtract = dayOfWeek === 0 ? 6 : dayOfWeek - 1;
         const monday = new Date(today);
-        monday.setDate(today.getDate() - mondayOffset);
-        dateRangeLabel = `Weekly - ${getLocalDateString(monday)} to ${getTodayDateString()}`;
+        monday.setDate(today.getDate() - daysToSubtract);
+        const weekStart = getLocalDateString(monday);
+        dateRangeLabel = `Weekly - ${weekStart} to ${getTodayDateString()}`;
         break;
       case 'monthly':
         const monthStart = getLocalDateString(new Date(today.getFullYear(), today.getMonth(), 1));
@@ -1158,6 +1177,9 @@ export default function InventoryExpenseTracker() {
                 <div>
                   <p className="text-green-50 text-sm inter font-medium">This Week's Expenses</p>
                   <p className="text-2xl aeon-bold text-white">{formatNaira(calculateExpenses.weekly)}</p>
+                  <p className="text-green-100 text-xs mt-1">
+                    {calculateExpenses.debug.weeklyCount} records this week
+                  </p>
                 </div>
                 <div className='w-14 h-14 rounded-full bg-green-50 border shadow-md border-white'>
                   <img src={trend} className="p-3 text-green-500" />

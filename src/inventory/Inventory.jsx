@@ -4,7 +4,7 @@ import { add, agenda, box, cloudd, coins, pack, paycard, report, text, today, tr
 import useRealtimeSync from '../hooks/useRealtimeSync';
 
 // GOOGLE APPS SCRIPT CONFIG
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOGJVycL5ko2cZBj_jfWoXqWP_W4JHo9YhwHSaOXT2FGGAESYw5rqFaIuOclskSyTIwQ/exec';
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnfly3EbGF2RAeWC9lGtm7_wdinDJDZnb-uyCbZcBH308Ab3tPdJhdeQKscrqE9MG5hw/exec';
 
 // DATE/TIMEZONE UTILITIES
 const getLocalDateString = (date = new Date()) => {

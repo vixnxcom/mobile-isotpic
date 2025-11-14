@@ -47,7 +47,7 @@ function App() {
     <>
        <div>
                 <img src={admin} className="w-12 border bg-purple-100 border-purple-200 rounded-full"/>
-                <h1 className="text-2xl aeon-bold gray200 mb-8">Alkab Nigeria Ltd</h1>
+                <h1 className="text-2xl aeon-bold gray200 mb-8">My Dashboard</h1>
               </div>
       <nav className="space-y-4 ">
        <Link
@@ -84,7 +84,7 @@ function App() {
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
             className="mb-4 px-4 py-2 bg-white flex flex-row items-center gap-2 text-xs 
-            border border-gray-300 shadow-xs rounded-[14px] hover:border-purple-400 hover:shadow-md inter "
+            border border-gray-300 shadow-xs rounded-[14px] hover:border-purple-300 hover:shadow-md inter "
           >
             <img
               src={sidebarOpen ? close : open}
@@ -100,13 +100,13 @@ function App() {
               element={
                 <>
                  <div className="bg-mobile w-full h-[600px]">
-                   <div className='py-2 px-6 flex flex-row rounded-[14px] shadow-sm border border-purple-200 inter
+                      <div className='py-2 px-6 flex flex-row rounded-[14px] shadow-sm border border-purple-200 inter
                         text-xl bg-white flex items-left justify-left'>
                     <p className="mb-2 inter tracking-wide flex flex-row">
                       <span><img src={hand} className="w-8 mr-2" /></span>
-                      <span className="mt-1">Hi, Welcome Back!</span>
+                      <span className="mt-1">Hi, Welcome Back! </span>
                     </p>
-                    <p className="text-gray-500 text-[16px] mt-2 mx-2">What would you like to do today?</p>
+                    <p className="text-gray-500 text-sm inter mt-2  mx-2"><span className="aeon-bold text-blue-600 mx-2 text-md">Alkab Nig Ltd </span>What would you like to do today?</p>
                   </div>
 
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-10">

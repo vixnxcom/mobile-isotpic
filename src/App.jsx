@@ -80,10 +80,11 @@ function App() {
 
         {/* Main Content */}
       <div className="flex-1 bg-purple-50 p-5 w-[100vw] min-h-screen">
+       
           {/* Toggle Button */}
           <button
             onClick={() => setSidebarOpen(!sidebarOpen)}
-            className="mb-4 px-4 py-2 bg-white flex flex-row items-center gap-2 text-xs 
+            className="mb-4 px-4 py-2 bg-white flex flex-row items-center gap-2 text-xs mt-5
             border border-gray-300 shadow-xs rounded-[14px] hover:border-purple-300 hover:shadow-md inter "
           >
             <img

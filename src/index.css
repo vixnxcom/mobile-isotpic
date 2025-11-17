@@ -413,6 +413,17 @@ background-color: #e00505;
 
 .bg-shape{
   background-image: url(assets/white.png);
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+
+ 
+  
+}
+
+.bg-lock{
+  background-image: url(assets/lock.png);
  
   background-position: center;
   background-repeat: no-repeat;
@@ -443,7 +454,7 @@ background-color: #e00505;
 }
 
 .payroll-bg{
-  
+
 }
 /* @media(min-width:2000px) {
   .bg-dash {

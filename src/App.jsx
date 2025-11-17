@@ -9,12 +9,28 @@ import Invoice from "./invoice/Invoice";
 import { useState } from "react";
 
 import Payroll from './payroll/PayrollPanel';
-import { admin, atm, brief, calc, close, credit, dcard, debit, file, hand, home, invent, invoice, open, pass } from "./assets";
+import { admin, atm, brief, calc, close, credit, dcard, debit, file, hand, home, invent, invoice, open, pass, shape } from "./assets";
 
 
 
 function App() {
   const [sidebarOpen, setSidebarOpen] = useState(true);
+  
+  // Password protection states
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [passwordInput, setPasswordInput] = useState("");
+  const [error, setError] = useState("");
+
+  const handlePasswordSubmit = (e) => {
+    e.preventDefault();
+    if (passwordInput === "admin") {
+      setIsAuthenticated(true);
+      setError("");
+    } else {
+      setError("Incorrect password. Please try again.");
+      setPasswordInput("");
+    }
+  };
 
   const menuItems = [
     { title: "Inventory", color: "text-white", path: "/inventory", icon: invent, protected: false },
@@ -33,6 +49,67 @@ function App() {
     { title: "Payroll Account", color: "text-black", path: "/payroll", icon: atm, protected: true },
     { title: "Invoice", color: "text-black", path: "invoice", icon: file, protected: false },
   ];
+
+  // Password Screen
+  if (!isAuthenticated) {
+    return (
+      <div className="fixed inset-0 w-full h-screen bg-lock flex items-center justify-center z-50 flex flex-col">
+
+        <div className='flex flex-col'>
+          <h1 className='p-4 mx-auto aeon-bold text-blue-600 text-2xl tracking-widest'>ISOTXPES ERP </h1>
+          <p className="inter text-gray-400 mb-5 ">
+        Your Entire Business, One Dashboard
+       </p>
+        </div>
+        <div className="bg-white rounded-2xl shadow-2xl p-8 w-full max-w-md mx-4">
+          
+          <div className="text-center mb-8">
+            <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <img src={shape} alt="lock" className="w-10 h-10" />
+            </div>
+            <h1 className="text-xl aeon-bold gray200 mb-2">Welcome Back</h1>
+            <p className="text-gray-600 inter">Enter your password to access the dashboard</p>
+          </div>
+
+          <div className="mb-6">
+            {/* <label className="block text-gray-700 text-sm  mb-2 inter" htmlFor="password">
+            Please enter the password to continue
+            </label> */}
+            <input
+              id="password"
+              type="password"
+              value={passwordInput}
+              onChange={(e) => setPasswordInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && handlePasswordSubmit(e)}
+              className="w-full px-4 py-3 border border-gray-300 rounded-[14px] focus:outline-none focus:border-purple-500 transition-colors inter"
+              placeholder="Enter password"
+              autoFocus
+            />
+            {error && (
+              <p className="text-red-500 text-sm mt-2 flex items-center inter">
+                <span className="mr-1">⚠️</span>
+                {error}
+              </p>
+            )}
+          </div>
+
+          <button
+            onClick={handlePasswordSubmit}
+            // className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 px-4 rounded-lg
+            //  transition-colors duration-200 shadow-lg hover:shadow-xl inter"
+                 className="w-full rounded-[14px] bluish py-4 px-4 shadow-2xl xl:max-w-sm intermid text-white
+                   cursor-pointer transform hover:scale-105 transition-all hover:!bg-purple-800"
+      >
+            Unlock Dashboard
+          </button>
+
+          <div className="mt-6 text-center">
+            <p className="text-xs text-gray-500 inter">Isotxpes ERP - Secure Access</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <Router>

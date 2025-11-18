@@ -436,11 +436,11 @@ const PayrollManagementSystem = () => {
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-        <div className="bg-white rounded-[14px] w-full max-w-6xl max-h-[90vh] overflow-hidden">
+      <div className="fixed inset-0 bg-shapee bg-opacity-50 flex items-center justify-center z-50 p-4">
+        <div className="bg-white shadow-xl rounded-[14px] w-full max-w-6xl max-h-[90vh] overflow-hidden">
           <div className="flex justify-between items-center p-6 ">
             <div>
-              <h2 className="text-xl aeon-bold text-purple-600">
+              <h2 className="text-xl aeon-bold text-blue-600">
                 Employees in {payrollRun.name}
               </h2>
               <p className="text-sm text-gray-600 aeon-bold mt-1">
@@ -449,7 +449,7 @@ const PayrollManagementSystem = () => {
             </div>
             <button
               onClick={handleModalClose}
-              className="text-gray-400 hover:text-purple-600 border-purple-200 rounded-full transition-colors"
+              className="text-gray-400 hover:text-blue-600 border-indigo-200 rounded-full transition-colors"
             >
               <X className="w-6 h-6 " />
             </button>
@@ -457,7 +457,7 @@ const PayrollManagementSystem = () => {
           
           {/* Modal Pagination Controls */}
           {runEmployees.length > 0 && (
-            <div className="flex justify-between items-center px-6 py-3 bg-purple-50">
+            <div className="flex justify-between items-center px-6 py-3 bg-indigo-50">
               <div className="flex items-center space-x-4">
                 <span className="text-sm inter text-gray-700">
                   Showing {modalStartIndex + 1} to {Math.min(modalEndIndex, runEmployees.length)} of {runEmployees.length} employees
@@ -502,7 +502,7 @@ const PayrollManagementSystem = () => {
           <div className="p-6 overflow-y-auto max-h-[50vh]">
             {runEmployees.length === 0 ? (
               <div className="text-center py-8">
-                <div className='bg-blue-50 border border-blue-100 w-16 h-16 mx-auto rounded-full'>
+                <div className='bg-indigo-50 border border-indigo-100 w-16 h-16 mx-auto rounded-full'>
                   <img src={user} className="opacity-50 p-2 mx-auto mb-4" />
                 </div>
                 <p className="text-gray-600 inter">No employees found in this payroll run</p>
@@ -510,7 +510,7 @@ const PayrollManagementSystem = () => {
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full border-collapse">
-                  <thead className="bg-purple-50">
+                  <thead className="bg-indigo-50">
                     <tr>
                       <th className="px-4 py-3 text-left text-xs inter gray200 uppercase tracking-wider">Employee Name</th>
                       <th className="px-4 py-3 text-left text-xs inter gray200 uppercase tracking-wider">Department</th>
@@ -522,7 +522,7 @@ const PayrollManagementSystem = () => {
                   </thead>
                   <tbody className="bg-white divide-y divide-gray-200">
                     {modalPaginatedEmployees.map(employee => (
-                      <tr key={employee.id} className="hover:bg-purple-50">
+                      <tr key={employee.id} className="hover:bg-in-50">
                         <td className="px-4 py-3 whitespace-nowrap">
                           <div className="text-sm intermid text-gray-900">
                             {employee.firstName} {employee.lastName}
@@ -562,7 +562,7 @@ const PayrollManagementSystem = () => {
           
           {/* Modal Footer with Pagination */}
           {runEmployees.length > 0 && (
-            <div className="flex justify-between items-center p-4 border-t border-purple-200 bg-purple-50">
+            <div className="flex justify-between items-center p-4 border-t border-indigo-200 bg-indigo-50">
               <div className="text-sm inter text-gray-600">
                 Showing {modalStartIndex + 1}-{Math.min(modalEndIndex, runEmployees.length)} of {runEmployees.length} employees
               </div>
@@ -615,14 +615,16 @@ const PayrollManagementSystem = () => {
                 <button
                   onClick={() => setModalCurrentPage(prev => Math.min(prev + 1, modalTotalPages))}
                   disabled={modalCurrentPage === modalTotalPages}
-                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm inter disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm inter disabled:opacity-50 disabled:cursor-not-allowed
+                   hover:bg-gray-100"
                 >
                   Next
                 </button>
                 <button
                   onClick={() => setModalCurrentPage(modalTotalPages)}
                   disabled={modalCurrentPage === modalTotalPages}
-                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm inter disabled:opacity-50 disabled:cursor-not-allowed hover:bg-gray-100"
+                  className="px-3 py-1 border border-gray-300 rounded-lg text-sm inter disabled:opacity-50 disabled:cursor-not-allowed
+                   hover:bg-gray-100"
                 >
                   Last
                 </button>
@@ -633,7 +635,7 @@ const PayrollManagementSystem = () => {
           <div className="flex justify-end p-4 border-t border-gray-200">
             <button
               onClick={handleModalClose}
-              className="bg-purple-300 text-white px-6 py-2 rounded-[14px] hover:bg-purple-600 transition-colors"
+              className="bg-blue-300 text-white px-6 py-2 rounded-[14px] hover:bg-blue-600 transition-colors"
             >
               Close
             </button>
@@ -1228,7 +1230,7 @@ const PayrollManagementSystem = () => {
 
           <div className=" mx-auto max-w-7xl">
 
-              <div className="payroll-gradient backdrop-blur-lg
+          <div className="payroll-gradient backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
 
            <div className=" px-4 sm:px-6 lg:px-8 flex justify-between items-center py-4">
@@ -1531,7 +1533,7 @@ const PayrollManagementSystem = () => {
                 </div>
               ) : (
                        <div className="overflow-x-auto bg-white rounded-b-2xl  border border-gray-50">
-                      <table className="w-[70vw] mx-auto border-collapse">
+                      <table className="w-[67vw] mx-auto border-collapse">
                    <thead className=" bg-blue-50  ">
                       <tr>
                        <th className="px-6 py-3 text-left text-xs inter gray200 uppercase tracking-wider ">
@@ -1556,8 +1558,8 @@ const PayrollManagementSystem = () => {
                     </thead>
                     <tbody className="bg-white divide-y  divide-green-100 rounded-[14px]">
                       {employees.map(employee => (
-                        <tr key={employee.id} className="hover:bg-gray-50">
-                          <td className="px-3 py-4 whitespace-nowrap">
+                        <tr key={employee.id} className="">
+                          <td className="px-4 py-4 whitespace-nowrap">
                             <div>
                               <div className="text-xs intermid text-blue-500 uppercase tracking-wide">
                                 {employee.firstName} {employee.lastName}
@@ -1602,7 +1604,7 @@ const PayrollManagementSystem = () => {
                             <button
                               onClick={() => handleDeleteEmployee(employee.id, `${employee.firstName} ${employee.lastName}`)}
                               disabled={isLoading}
-                              className="text-gray-700 mx-5 hover:text-red-600 border border-gray-300 p-1 rounded-[6px] hover:bg-red-50
+                              className="text-gray-700 ml-8 hover:text-red-600 border border-gray-300 p-1 rounded-[6px] hover:bg-red-50
                                transition-colors disabled:opacity-50 hover:border-red-300 disabled:cursor-not-allowed"
                               title="Delete Employee"
                             >
@@ -1728,31 +1730,42 @@ const PayrollManagementSystem = () => {
                   )}
 
                   {/* Verification Status */}
-                  <div className="absolute top-2 left-2">
+                  <div className="absolute top-2 left-2 ">
                     {verificationStatus[employee.id] === 'matched' && (
-                      <div className="bg-white border border-green-600 text-white rounded-full w-5 h-5 flex items-center justify-center">
-                        <img src={tick} alt="Verified" className="p-1" />
+                      <div className='flex flex-row mx-2 '>
+                         <p className='text-xs intermid text-green-600'>Account Verified</p>
+                      <div className="bg-green-600 border border-green-600 text-white rounded-full mx-1 w-3 h-3 flex items-center justify-center">
+                     
+                        <img src={check} alt="Verified" className="w-2 h-2 bg-green-600 rounded-full " />
+                      </div>
                       </div>
                     )}
                     {verificationStatus[employee.id] === 'mismatch' && (
-                      <div className="bg-yellow-500 text-white rounded-full w-5 h-5 flex items-center justify-center">
+                          <div className='flex flex-row mx-2'>
+                         <p className='text-xs intermid text-orange-600'>Account Mismatched</p>
+                      <div className=" text-orange-600 bg-white rounded-full w-4 h-4 mx-2 flex items-center justify-center">
                         <span className="text-xs">!</span>
                       </div>
+                      </div>
+                    
                     )}
                     {verificationStatus[employee.id] === 'error' && (
-                      <div className=" text-gray-400 rounded-full w-4 h-4 mx-1  flex items-center justify-center">
+                         <div className='flex flex-row mx-2'>
+                         <p className='text-xs intermid text-gray-600'>Verification Failed</p>
+                      <div className=" text-gray-400 rounded-full w-4 h-4 mx-2  flex items-center justify-center">
                         <XCircle size='20' />
                       </div>
+                        </div>
                     )}
                   </div>
 
-         <div className="flex items-center justify-between py-1">
+         <div className="flex items-center justify-between py-2">
                     <div>
                       <h4 className="intermid gray200 py-1 mt-1">
                         {employee.firstName} {employee.lastName}
                       </h4>
-                      <p className="text-sm inter text-gray-600">{employee.department}</p>
-                      <p className="text-sm inter text-gray-600">{employee.email}</p>
+                      <p className="text-xs inter text-gray-600">{employee.department}</p>
+                      <p className="text-xs inter text-gray-600">{employee.email}</p>
                  
                   
                    
@@ -1938,28 +1951,8 @@ const PayrollManagementSystem = () => {
     </div>
 
     {/* Total Payroll Spending Summary */}
-    <div className="credit-bg  rounded-[14px] p-4 text-white">
-      <div className="flex justify-between items-center">
-        <div>
-          <h3 className="text-lg aeon-bold mb-2">Total Payroll Spending</h3>
-          <p className="text-green-100 text-sm inter">
-            Overview of all payroll expenditures across all time periods
-          </p>
-        </div>
-       
-        <div className="text-right">
-          <div className="text-3xl aeon-bold">
-            ₦{totalPayrollSpending.toLocaleString()}
-          </div>
-          <div className="text-blue-200 text-sm inter tracking-widest "> 
-            <span className='text-md text-indigo-50 tracking-widest mr-2 aeon-bold '>
-            {payrollRuns.length} 
-          </span>
-            payroll runs processed
-          </div>
-        </div>
-      </div>
-    </div>
+   
+  
   
     {/* Status Filter Dropdown */}
     <div className="bg-white rounded-[14px] border border-gray-200 p-4">
@@ -2272,7 +2265,7 @@ const PayrollManagementSystem = () => {
                 }`}
                 onClick={() => handleEmployeeSelect(employee)}
               >
-                <div className="flex flex-row justify-between items-start mb-2">
+                <div className="flex flex-row justify-between items-start mb-1">
                   <h4 className="intermid text-gray-900">
                     {employee.firstName} {employee.lastName}
                   </h4>
@@ -2282,8 +2275,8 @@ const PayrollManagementSystem = () => {
                     </div>
                   )}
                 </div>
-                <div className="text-sm inter text-gray-600 mb-1">{employee.email}</div>
-                <div className="text-sm inter text-gray-600 mb-1">{employee.department}</div>
+                <div className="text-xs inter text-gray-600 mb-1">{employee.email}</div>
+                <div className="text-xs inter text-gray-600 mb-1">{employee.department}</div>
                 <div className="text-sm intermid text-green-600">
                   Salary: ₦{calculateNetSalary(employee).toLocaleString()}
                 </div>
@@ -2431,7 +2424,7 @@ const PayrollManagementSystem = () => {
                           {paymentTracking.paymentSummary.runs.map(run => (
                             <tr key={run.id} className="hover:bg-gray-50">
                               <td className="px-4 py-3 whitespace-nowrap">
-                                <div className="text-sm inter text-gray-900">{run.name}</div>
+                                <div className="text-sm inter gray200">{run.name}</div>
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
                                 <div className="text-sm inter text-gray-600">{run.period}</div>
@@ -2442,7 +2435,7 @@ const PayrollManagementSystem = () => {
                                 </div>
                               </td>
                               <td className="px-4 py-3 whitespace-nowrap">
-                                <div className="text-sm inter text-gray-500">
+                                <div className="text-sm inter gray200">
                                   {new Date(run.createdAt).toLocaleDateString()}
                                 </div>
                               </td>

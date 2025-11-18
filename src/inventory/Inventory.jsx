@@ -4,8 +4,7 @@ import { add, agenda, box, cloudd, coins, pack, paycard, report, text, today, tr
 import useRealtimeSync from '../hooks/useRealtimeSync';
 
 // GOOGLE APPS SCRIPT CONFIG
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnfly3EbGF2RAeWC9lGtm7_wdinDJDZnb-uyCbZcBH308Ab3tPdJhdeQKscrqE9MG5hw/exec';
-
+const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwOGJVycL5ko2cZBj_jfWoXqWP_W4JHo9YhwHSaOXT2FGGAESYw5rqFaIuOclskSyTIwQ/exec';
 
 // DATE/TIMEZONE UTILITIES
 const getLocalDateString = (date = new Date()) => {
@@ -1180,7 +1179,47 @@ export default function InventoryExpenseTracker() {
         </div>
       </div>
 
+      {/* total */}
+{/*       
+               <div className="mt-6 pt-4 border-t border-gray-200">
+                <div className="flex justify-between items-center">
+                  <span className="text-sm inter text-gray-600">Total All Time Expenses</span>
+                  <span className="text-lg aeon-bold text-green-600">
+                  
+                  </span>
+                </div>
+                 <div className="flex justify-between items-center mt-2">
+                  <span className="text-sm inter text-gray-600">Total Expenses Count</span>
+                  <span className="text-lg aeon-bold text-blue-600">
+                   records
+                  </span>
+                </div> 
+              </div> */}
+      {/* total */}
+
       {/* Debug panel - you can remove this in production */}
+        <div className="credit-bg  rounded-[14px] p-4 text-white">
+      <div className="flex justify-between items-center">
+        <div>
+          <h3 className="text-lg aeon-bold mb-2">Total Expenses</h3>
+          <p className="text-green-100 text-sm inter">
+            Overview of all expense across all time periods
+          </p>
+        </div>
+        <div className="text-right">
+          <div className="text-3xl aeon-bold">
+         <p className="text-2xl text-indigo-50 aeon-bold">  {formatNaira(calculateExpenses.alltime)}</p>
+          </div>
+          <div className=" flex flex-row gap-2">
+              
+               <p className="text-purple-300 inter text-sm">
+                <span className="text-md text-indigo-50 tracking-widest mr-1 aeon-bold">
+                  {state.expenses.length}  </span>
+             Expense Records </p>
+          </div>
+        </div>
+      </div>
+      </div>
       {/* {process.env.NODE_ENV === 'development' && renderDateDebugPanel()} */}
 
       {/* Connection Status Banner */}
@@ -1300,7 +1339,9 @@ export default function InventoryExpenseTracker() {
           {state.expenses.length > 0 ? (
             <div className="bg-white p-6 rounded-[14px] border border-gray-200">
               <h3 className="text-lg aeon-bold gray200 mb-6">Expense Summary</h3>
-              
+
+
+
               {/* Top Expense Categories with Linear Graphs */}
               <div className="space-y-4">
                 {expenseCategories.map((categoryData, index) => {
@@ -1336,20 +1377,7 @@ export default function InventoryExpenseTracker() {
                 })}
               </div>
               
-              <div className="mt-6 pt-4 border-t border-gray-200">
-                <div className="flex justify-between items-center">
-                  <span className="text-sm inter text-gray-600">Total All Time Expenses</span>
-                  <span className="text-lg aeon-bold text-green-600">
-                    {formatNaira(calculateExpenses.alltime)}
-                  </span>
-                </div>
-                {/* <div className="flex justify-between items-center mt-2">
-                  <span className="text-sm inter text-gray-600">Total Expenses Count</span>
-                  <span className="text-lg aeon-bold text-blue-600">
-                    {state.expenses.length} records
-                  </span>
-                </div> */}
-              </div>
+             
             </div>
           ) : (
             <div className="bg-white p-6 rounded-[14px] border border-indigo-100">
@@ -2170,7 +2198,7 @@ export default function InventoryExpenseTracker() {
 
   return (
     <div className="min-h-screen bg-shapee shadow-sm rounded-[14px] border border-white">
-         <div className="inventory-gradient backdrop-blur-lg
+           <div className="inventory-gradient backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
           <div className="flex justify-between items-center py-4">
@@ -2181,9 +2209,30 @@ export default function InventoryExpenseTracker() {
               <p className="text-sm text-gray-400 tracking-wide inter mt-1">Track daily expenses and monitor spending by category</p>
             </div>
 
-            <div className="text-right">
+            {/* <div className="text-right">
               <p className="text-sm text-gray-400 tracking-wide aeon-bold"> Total Expense</p>
              <p className="text-2xl aeon-bold text-green-400">{formatNaira(calculateExpenses.alltime)}</p>
+            </div> */}
+             <div className='flex flex-row gap-2 mb-4 '>
+              <div className={` border border-indigo-800 text-xs  text-indigo-400 px-2 py-1
+                 inter rounded-[8px]  flex items-center gap-2 text-[8px]
+                     inter ${getConnectionStatusColor()} flex items-center gap-2`}>
+                <div className={`w-3 h-3 rounded-full ${
+                  connectionStatus === 'connected' ? 'bg-green-500' :
+                  connectionStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' :
+                  connectionStatus === 'error' ? 'bg-red-500' : 'bg-gray-500'
+                }`}></div>
+                {getConnectionStatusText()}
+              </div>
+              <button
+                onClick={testGoogleConnection}
+              className="border border-indigo-800 text-xs  text-indigo-400 px-2 py-1
+                 inter rounded-[8px] hover:bg-indigo-700 hover:!text-white flex items-center gap-2 text-[8px]
+                 transition-all"
+                title="Test Google Sheets connection"
+              >
+                <img src={cloudd} className="h-3 w-3 " /> Connection Test
+              </button>
             </div>
           </div>
 
@@ -2208,27 +2257,7 @@ export default function InventoryExpenseTracker() {
               })}
             </nav>
             
-            <div className='flex flex-row gap-2 mb-4 mt-4'>
-              <div className={` border border-indigo-800 text-xs  text-indigo-400 px-2 py-1
-                 inter rounded-[8px]  flex items-center gap-2 text-[8px]
-                     inter ${getConnectionStatusColor()} flex items-center gap-2`}>
-                <div className={`w-3 h-3 rounded-full ${
-                  connectionStatus === 'connected' ? 'bg-green-500' :
-                  connectionStatus === 'connecting' ? 'bg-yellow-500 animate-pulse' :
-                  connectionStatus === 'error' ? 'bg-red-500' : 'bg-gray-500'
-                }`}></div>
-                {getConnectionStatusText()}
-              </div>
-              <button
-                onClick={testGoogleConnection}
-              className="border border-indigo-800 text-xs  text-indigo-400 px-2 py-1
-                 inter rounded-[8px] hover:bg-indigo-700 hover:!text-white flex items-center gap-2 text-[8px]
-                 transition-all"
-                title="Test Google Sheets connection"
-              >
-                <img src={cloudd} className="h-3 w-3 " /> Connection Test
-              </button>
-            </div>
+           
           </div>
         </div>
       </div>

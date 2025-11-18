@@ -4,8 +4,8 @@ import { add, agenda, box, cloudd, coins, pack, paycard, report, text, today, tr
 import useRealtimeSync from '../hooks/useRealtimeSync';
 
 // GOOGLE APPS SCRIPT CONFIG
-const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwnfly3EbGF2RAeWC9lGtm7_wdinDJDZnb-uyCbZcBH308Ab3tPdJhdeQKscrqE9MG5hw/exec';
-
+const GOOGLE_APPS_SCRIPT_URL = 
+'https://script.google.com/macros/s/AKfycbwnfly3EbGF2RAeWC9lGtm7_wdinDJDZnb-uyCbZcBH308Ab3tPdJhdeQKscrqE9MG5hw/exec';
 
 // DATE/TIMEZONE UTILITIES
 const getLocalDateString = (date = new Date()) => {
@@ -803,35 +803,6 @@ export default function InventoryExpenseTracker() {
     };
   }, [state.expenses, selectedPeriod, selectedCategory, selectedProduct]);
 
-  // Calculate top expense categories
-  const expenseCategories = useMemo(() => {
-    const categoryTotals = state.expenses.reduce((acc, expense) => {
-      const category = expense.category || 'Uncategorized';
-      acc[category] = (acc[category] || 0) + (expense.totalAmount || 0);
-      return acc;
-    }, {});
-
-    // Convert to array and sort by amount (descending)
-    const sortedCategories = Object.entries(categoryTotals)
-      .map(([category, amount]) => ({ category, amount }))
-      .sort((a, b) => b.amount - a.amount);
-
-    // Get top 5 categories
-    const topCategories = sortedCategories.slice(0, 5);
-    
-    // Calculate total of remaining categories
-    const otherCategoriesTotal = sortedCategories
-      .slice(5)
-      .reduce((sum, item) => sum + item.amount, 0);
-
-    // Add "Others" category if there are remaining categories
-    if (otherCategoriesTotal > 0) {
-      topCategories.push({ category: 'Others', amount: otherCategoriesTotal });
-    }
-
-    return topCategories;
-  }, [state.expenses]);
-
   const formatNaira = (amount) => {
     return new Intl.NumberFormat('en-NG', {
       style: 'currency',
@@ -1299,56 +1270,20 @@ export default function InventoryExpenseTracker() {
 
           {state.expenses.length > 0 ? (
             <div className="bg-white p-6 rounded-[14px] border border-gray-200">
-              <h3 className="text-lg aeon-bold gray200 mb-6">Expense Summary</h3>
-              
-              {/* Top Expense Categories with Linear Graphs */}
+              <h3 className="text-lg aeon-bold gray200 mb-6">Expenses Summary</h3>
               <div className="space-y-4">
-                {expenseCategories.map((categoryData, index) => {
-                  const colors = [
-                    'bg-gradient-to-r from-blue-500 to-blue-600',
-                    'bg-gradient-to-r from-green-500 to-green-600', 
-                    'bg-gradient-to-r from-purple-500 to-purple-600',
-                    'bg-gradient-to-r from-orange-500 to-orange-600',
-                    'bg-gradient-to-r from-pink-500 to-pink-600',
-                    'bg-gradient-to-r from-gray-500 to-gray-600'
-                  ];
-                  
-                  const color = colors[index] || colors[colors.length - 1];
-                  
-                  return (
-                    <div key={categoryData.category} className="flex items-center justify-between p-4 bg-gray-50 rounded-lg">
-                      <div className="flex-1">
-                        <div className="flex justify-between items-center mb-2">
-                          <span className="font-medium inter text-gray-800">{categoryData.category}</span>
-                          <span className="text-sm intermid text-green-600">{formatNaira(categoryData.amount)}</span>
-                        </div>
-                        <div className="w-full bg-gray-200 rounded-full h-2">
-                          <div 
-                            className={`h-2 rounded-full ${color}`}
-                            style={{ 
-                              width: `${(categoryData.amount / calculateExpenses.alltime) * 100}%` 
-                            }}
-                          ></div>
-                        </div>
-                      </div>
-                    </div>
-                  );
-                })}
-              </div>
-              
-              <div className="mt-6 pt-4 border-t border-gray-200">
                 <div className="flex justify-between items-center">
                   <span className="text-sm inter text-gray-600">Total All Time Expenses</span>
                   <span className="text-lg aeon-bold text-green-600">
                     {formatNaira(calculateExpenses.alltime)}
                   </span>
                 </div>
-                {/* <div className="flex justify-between items-center mt-2">
+                <div className="flex justify-between items-center">
                   <span className="text-sm inter text-gray-600">Total Expenses Count</span>
                   <span className="text-lg aeon-bold text-blue-600">
                     {state.expenses.length} records
                   </span>
-                </div> */}
+                </div>
               </div>
             </div>
           ) : (
@@ -2170,7 +2105,7 @@ export default function InventoryExpenseTracker() {
 
   return (
     <div className="min-h-screen bg-shapee shadow-sm rounded-[14px] border border-white">
-         <div className="inventory-gradient backdrop-blur-lg
+           <div className="inventory-gradient backdrop-blur-lg
        shadow-sm border-b border-gray-500 rounded-[14px]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-5">
           <div className="flex justify-between items-center py-4">

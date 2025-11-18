@@ -1200,8 +1200,7 @@ const banks = [
       <div className="max-w-7xl mx-auto">
         {/* Header */}
      <div className="rounded-[14px] pt-4 pr-8 pb-0 pl-8 
-    mb-8 text-white text-left  bg-gradient-to-br 
-                from-black to-purple-900 backdrop-shadow-sm">
+    mb-8 text-white text-left credit-gradient backdrop-shadow-sm">
 
           <div className="flex mb-1 justify-between items-start">
             <div className="flex">

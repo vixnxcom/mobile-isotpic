@@ -1514,7 +1514,7 @@ export default function InventoryExpenseTracker() {
         <p className="text-blue-600">
           <span className="aeon-bold">Today's Total Expenses: </span>
           <span className="text-xl aeon-bold">{formatNaira(calculateExpenses.daily)}</span>
-          <span className="text-sm inter text-blue-500 ml-2">({calculateExpenses.debug.dailyCount} records)</span>
+          {/* <span className="text-sm inter text-blue-500 ml-2">({calculateExpenses.debug.dailyCount} records)</span> */}
         </p>
       </div>
 
@@ -1539,23 +1539,43 @@ export default function InventoryExpenseTracker() {
                   <th className="px-4 py-3 text-left text-xs inter gray200 uppercase tracking-wider">Total Amount</th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-gray-200">
-                {state.expenses.slice(-10).reverse().map((expense, index) => (
-                  <tr key={expense.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                    <td className="px-4 py-3 text-sm inter gray200 border-gray-200 border-r">{expense.productName}</td>
-                    <td className="px-4 py-3 text-sm intermid  border-r border-gray-200">
-                        <span className="px-2 py-1 inter rounded-full text-xs bg-blue-50 border border-blue-100 text-blue-500 "> {expense.sku}</span> </td>
-                    <td className="px-4 py-3 text-sm border-r border-gray-200">
-                      <span className="px-2 py-1 bg-pink-50 border border-pink-100 text-pink-600 rounded-full text-xs">
-                        {expense.category}
-                      </span>
-                    </td>
-                    <td className="px-4  py-3 text-sm gray200 inter border-r border-gray-200 text-center ">{expense.quantity}</td>
-                    <td className="px-4 py-3 text-sm gray200 border-r inter border-gray-200">{expense.date}</td>
-                    <td className="px-4 text-left py-3 text-sm inter  text-green-600">{formatNaira(expense.totalAmount)}</td>
-                  </tr>
-                ))}
-              </tbody>
+            <tbody className="divide-y divide-gray-200">
+  { [...state.expenses]
+      .sort((a, b) => new Date(b.date) - new Date(a.date))  // newest → oldest
+      .slice(0, 10)   // only the latest 10
+      .map((expense, index) => (
+        <tr key={expense.id} className={index % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+          <td className="px-4 py-3 text-sm inter gray200 border-gray-200 border-r">
+            {expense.productName}
+          </td>
+
+          <td className="px-4 py-3 text-sm intermid border-r border-gray-200">
+            <span className="px-2 py-1 inter rounded-full text-xs bg-blue-50 border border-blue-100 text-blue-500">
+              {expense.sku}
+            </span>
+          </td>
+
+          <td className="px-4 py-3 text-sm border-r border-gray-200">
+            <span className="px-2 py-1 bg-pink-50 border border-pink-100 text-pink-600 rounded-full text-xs">
+              {expense.category}
+            </span>
+          </td>
+
+          <td className="px-4 py-3 text-sm gray200 inter border-r border-gray-200 text-center">
+            {expense.quantity}
+          </td>
+
+          <td className="px-4 py-3 text-sm gray200 inter border-r border-gray-200">
+            {expense.date}
+          </td>
+
+          <td className="px-4 text-left py-3 text-sm inter text-green-600">
+            {formatNaira(expense.totalAmount)}
+          </td>
+        </tr>
+      ))}
+</tbody>
+
             </table>
           </div>
         </div>

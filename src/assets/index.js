@@ -32,7 +32,7 @@ import del from './bin.png'
 import add from './add.png'
 import man from './man.png'
 import woman from './woman.jpg'
-import table from './table.jpg'
+
 import atm from './atm.png'
 import go from './go.png'
 import file from './file.png'
@@ -82,7 +82,7 @@ export{
   debit, del, hand, bill, debitc, shape, footer, reliable, flexible, 
   img, cheer, filter,
   credit, invent, home, invoice, close, paycard, coins, notes, edit, add, woman,
-  man, table, file, go, atm, calc,
+  man,  file, go, atm, calc,
    open,cloud, admin, today, trend, dcard, gen, inv, set,
    pack, month, totall, todayy, agenda, credity, board, insights, platform, 
    friendly,

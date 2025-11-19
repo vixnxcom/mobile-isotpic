@@ -22,7 +22,7 @@ function App() {
   const [error, setError] = useState("");
 
   const handlePasswordSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault()
     if (passwordInput === "admin") {
       setIsAuthenticated(true);
       setError("");

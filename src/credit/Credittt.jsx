@@ -64,7 +64,7 @@ const PaystackPayment = () => {
   const [paymentAmounts, setPaymentAmounts] = useState({});
 
   // Google Apps Script Configuration - REPLACE WITH YOUR WEB APP URL
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbykDZ-lrcPBGe_t1bZx6yFziizADKPeqZxdCeS1L833h4IenFPq4DNEZutsbW1yGbw9/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxroObZlIEIDbyh52LRC-VRW2hOI29d6E7gGAGPRg_vCZ2kRsyn38tWsMcTQMVCidjWxQ/exec';
 
   // Paystack configuration (for inline Paystack modal only - public key is safe to keep client-side)
   const PAYSTACK_PUBLIC_KEY = 'pk_test_aa9fab935a0de3dda723d27a2c97257831820cbc';
@@ -1855,7 +1855,7 @@ const banks = [
 
 
 
-                              <div className="bg-gradient-to-r from-blue-800 to-purple-800  rounded-[14px] p-4 text-white">
+                              <div className="credit-bg  rounded-[14px] p-4 text-white">
       <div className="flex justify-between items-center">
         <div>
           <h3 className="text-lg aeon-bold mb-2">Total Credit Spendings</h3>

@@ -1346,9 +1346,9 @@ export default function InventoryExpenseTracker() {
               <div className="space-y-4">
                 {expenseCategories.map((categoryData, index) => {
                   const colors = [
-                    'bg-gradient-to-r from-blue-500 to-blue-600',
-                    'bg-gradient-to-r from-green-500 to-green-600', 
-                    'bg-gradient-to-r from-purple-500 to-purple-600',
+                    'blue-bg',
+                    'green-bg', 
+                    'purple-bg',
                     'bg-gradient-to-r from-orange-500 to-orange-600',
                     'bg-gradient-to-r from-pink-500 to-pink-600',
                     'bg-gradient-to-r from-gray-500 to-gray-600'

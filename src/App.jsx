@@ -33,7 +33,7 @@ function App() {
   };
 
   const menuItems = [
-    { title: "Inventory", color: "text-white", path: "/inventory", icon: invent, protected: false },
+    { title: "Expense Tracker", color: "text-white", path: "/inventory", icon: invent, protected: false },
     { title: "Credit Account", color: "text-white", path: "/credit", icon: debit, protected: true },
       { title: "Payroll Account", color: "text-white", path: "/payroll", icon: brief, protected: true },
        { title: "Generate Invoice", color: "text-white", path: "/invoice", icon: invoice, protected: false },
